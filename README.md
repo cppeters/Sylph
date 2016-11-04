@@ -2,7 +2,7 @@
 # University of Washington
 # Mobile Applications - 450 Class
 <br />
-Contributors:
+Contributors: <br />
 Casey Peterson - cppeters <br />
 Andy Bleich - Altishan <br />
 Daniel Bayless - bayled <br />
