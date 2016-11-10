@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="a450team3.tacoma.uw.edu.sylph.LoginActivity">
+    tools:context="a450team3.tacoma.uw.edu.sylph.authenticate.LoginActivity">
 
     <com.google.android.youtube.player.YouTubePlayerView
         android:id="@+id/youtube_player_view"

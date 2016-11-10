@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="a450team3.tacoma.uw.edu.sylph.LoginActivity"
+    tools:context="a450team3.tacoma.uw.edu.sylph.authenticate.LoginActivity"
     android:weightSum="4">
 
     <LinearLayout
