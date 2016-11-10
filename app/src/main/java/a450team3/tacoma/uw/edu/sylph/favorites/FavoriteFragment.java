@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class FavoriteFragment extends Fragment {
 
     /** URL for the php file, used for retrieving favorites. */
     private static final String FAVORITES_URL =
-            "http://cssgate.insttech.washington.edu/~bleicha/favorites.php?cmd=favorites";
+            "http://cssgate.insttech.washington.edu/~_450team3/getFavorites.php?cmd=favorites";
 
     /** List of favorites for creating fragment. */
     private List<Favorite> mFavoritesList;
@@ -73,7 +74,8 @@ public class FavoriteFragment extends Fragment {
             } else {
                 mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            mRecyclerView.setAdapter(new MyFavoriteRecyclerViewAdapter(mFavoritesList, mListener));
+            DownloadFavoriteTask dFT = new DownloadFavoriteTask();
+            dFT.execute(new String[] {FAVORITES_URL});
         }
         return view;
     }
@@ -133,12 +135,13 @@ public class FavoriteFragment extends Fragment {
                     BufferedReader reader = new BufferedReader(
                             new InputStreamReader(contentFromUrl));
 
-                    String s;
+                    String s = "";
                     while ((s = reader.readLine()) != null) {
                         response += s;
                     }
 
                 } catch (Exception e) {
+                    Log.e("FavoriteFragment", response);
                     response = "Unable to download favorites. Reasons: " + e.getMessage();
                 } finally {
                     if (urlConnection != null) {
@@ -159,6 +162,9 @@ public class FavoriteFragment extends Fragment {
             }
             mFavoritesList = new ArrayList<>();
             result = Favorite.parseFavoriteJSON(result, mFavoritesList);
+            if (result != null) {
+                Log.e("Favorite Fragment", "Something has gone wrong with JSON.");
+            }
             if (!mFavoritesList.isEmpty()) {
                 mRecyclerView.setAdapter(new MyFavoriteRecyclerViewAdapter(
                         mFavoritesList, mListener));
