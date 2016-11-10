@@ -13,9 +13,13 @@ import java.util.List;
 
 public class Favorite {
 
+    /** String to be used in JSON to retrieve account. */
     public static final String ACCOUNT = "Account";
+    /** String to be used in JSON to retrieve title. */
     public static final String TITLE = "Title";
+    /** String to be used in JSON to retrieve description. */
     public static final String DESCRIPTION = "Description";
+    /** String to be used in JSON to retrieve the url. */
     public static final String URL = "URL";
 
     /** Account this favorite belongs to */
@@ -78,6 +82,12 @@ public class Favorite {
         url = theURL;
     }
 
+    /**
+     * Parses the JSON recieved into a Favorite Object
+     * @param favoiteJSON The string holding JSON data
+     * @param favoriteList List to be added to on Favorite Fragment
+     * @return Null if Successful.
+     */
     public static String parseFavoriteJSON(String favoiteJSON, List<Favorite> favoriteList) {
         String reason = null;
 

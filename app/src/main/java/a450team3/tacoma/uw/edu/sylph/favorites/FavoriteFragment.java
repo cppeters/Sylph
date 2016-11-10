@@ -1,6 +1,7 @@
 package a450team3.tacoma.uw.edu.sylph.favorites;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,7 +10,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import a450team3.tacoma.uw.edu.sylph.R;
@@ -22,7 +30,7 @@ import a450team3.tacoma.uw.edu.sylph.R;
  */
 public class FavoriteFragment extends Fragment {
 
-    // TODO: Customize parameters
+    /** Number of Columns for the list. */
     private int mColumnCount = 1;
 
     /** URL for the php file, used for retrieving favorites. */
@@ -35,6 +43,7 @@ public class FavoriteFragment extends Fragment {
     /** Recycler View for cycling fragments */
     private RecyclerView mRecyclerView;
 
+    /** Listener for List interaction */
     private OnListFragmentInteractionListener mListener;
 
     /**
@@ -99,5 +108,61 @@ public class FavoriteFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(Favorite favorite);
+    }
+
+    /**
+     * Runs in the background to download the Favorites data from the database.
+     */
+    public class DownloadFavoriteTask extends AsyncTask<String, Void, String> {
+
+        /**
+         * Downoalds the data as a background thread.
+         * @param urls urls to download String data from.
+         * @return Returns the data or an error.
+         */
+        @Override
+        protected String doInBackground(String... urls) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+
+            for (String string: urls) {
+                try {
+                    URL urlObj = new URL(string);
+                    urlConnection = (HttpURLConnection) urlObj.openConnection();
+                    InputStream contentFromUrl = urlConnection.getInputStream();
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(contentFromUrl));
+
+                    String s;
+                    while ((s = reader.readLine()) != null) {
+                        response += s;
+                    }
+
+                } catch (Exception e) {
+                    response = "Unable to download favorites. Reasons: " + e.getMessage();
+                } finally {
+                    if (urlConnection != null) {
+                        urlConnection.disconnect();
+                    }
+                }
+            }
+            return response;
+        }
+
+        @Override
+        public void onPostExecute(String result) {
+            //We got something wrong here
+            if (result.startsWith("Unable to")) {
+                Toast.makeText(getActivity().getApplicationContext(), result,
+                        Toast.LENGTH_LONG).show();
+                return;
+            }
+            mFavoritesList = new ArrayList<>();
+            result = Favorite.parseFavoriteJSON(result, mFavoritesList);
+            if (!mFavoritesList.isEmpty()) {
+                mRecyclerView.setAdapter(new MyFavoriteRecyclerViewAdapter(
+                        mFavoritesList, mListener));
+            }
+        }
     }
 }
