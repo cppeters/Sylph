@@ -22,6 +22,8 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import a450team3.tacoma.uw.edu.sylph.favorites.FavoriteActivity;
+
 /**
  * Class for a Login Activity
  */
@@ -148,8 +150,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
-        startActivity(new Intent(this,YoutubePlayerActivity.class));
-
     }
 
     /**
