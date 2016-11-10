@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "102735356630",
+    "project_id": "firebase-sylph"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102735356630:android:269497cae7f34f42",
+        "android_client_info": {
+          "package_name": "a450team3.tacoma.uw.edu.sylph"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "102735356630-1qbf2c6ndcdbf1v7i1i10r7r7ljpvick.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "a450team3.tacoma.uw.edu.sylph",
+            "certificate_hash": "6B65DD6FC6C7FCDB22F50E39C098B34B0CE21ABA"
+          }
+        },
+        {
+          "client_id": "102735356630-fre9pmmb3sqh7vo0qmeb3ae72hjtfg3f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA01OoPc8D1MUziv2YpnIplWSGD8Ks4fP0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
