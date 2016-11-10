@@ -1,4 +1,4 @@
-package a450team3.tacoma.uw.edu.sylph;
+package a450team3.tacoma.uw.edu.sylph.player;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +19,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import a450team3.tacoma.uw.edu.sylph.R;
 import a450team3.tacoma.uw.edu.sylph.favorites.FavoriteActivity;
 
 

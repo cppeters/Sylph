@@ -1,4 +1,4 @@
-package a450team3.tacoma.uw.edu.sylph;
+package a450team3.tacoma.uw.edu.sylph.authenticate;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -22,6 +22,8 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import a450team3.tacoma.uw.edu.sylph.R;
+import a450team3.tacoma.uw.edu.sylph.player.YoutubePlayerActivity;
 import a450team3.tacoma.uw.edu.sylph.favorites.FavoriteActivity;
 
 /**
@@ -174,11 +176,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         if (signedIn) {
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.fab).setVisibility(View.VISIBLE);
         } else {
             mStatusTextView.setText(R.string.signed_out);
 
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
             findViewById(R.id.sign_out_button).setVisibility(View.GONE);
+            findViewById(R.id.fab).setVisibility(View.GONE);
         }
     }
 
