@@ -14,9 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -95,13 +99,8 @@ public class FavoriteFragment extends Fragment {
             } else {
                 mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            ConnectivityManager connectivityManager = (ConnectivityManager)
-                    getActivity(). getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-            if (networkInfo != null && networkInfo.isConnected()) {
-                DownloadFavoriteTask dFT = new DownloadFavoriteTask();
-                dFT.execute(new String[]{buildFavoritesUrl()});
-            } //Use local db no matter what
+            syncDB();
+            //Use local db no matter what
             if (mFavoritesDB == null) {
                 mFavoritesDB = new FavoritesDB(getActivity());
             }
@@ -133,23 +132,6 @@ public class FavoriteFragment extends Fragment {
         mListener = null;
     }
 
-    /** Method to form the url to get favorites from database.
-     *
-     * @return Returns the proper url string.
-     */
-
-    private String buildFavoritesUrl() {
-        StringBuilder sb = new StringBuilder(FAVORITES_URL);
-        try {
-            sb.append("&email=");
-            sb.append(URLEncoder.encode(mAccount.getEmail(), "UTF-8"));
-        } catch (Exception e) {
-            Toast.makeText(getActivity(), "Something went wrong with the url.",
-                    Toast.LENGTH_LONG).show();
-        }
-        return sb.toString();
-
-    }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -233,6 +215,48 @@ public class FavoriteFragment extends Fragment {
     }
 
     /**
+     * Method to download data from online database if available, and sync with local DB
+     * in async task.
+     */
+    public void syncDB() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                getActivity(). getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            DownloadFavoriteTask dFT = new DownloadFavoriteTask();
+            dFT.execute(new String[]{FAVORITES_URL});
+        }
+    }
+
+    public void addToFavorites(Favorite favorite) {
+
+        String url = createAddFavURL(favorite);
+        AddFavoritesTask aFT = new AddFavoritesTask();
+        aFT.execute(url);
+    }
+
+    private String createAddFavURL(Favorite favorite) {
+        StringBuilder sb = new StringBuilder(ADD_FAVORITES_URL);
+        try {
+            sb.append("account=");
+            sb.append(URLEncoder.encode(favorite.getAccount(), "UTF-8"));
+
+            sb.append("&title=");
+            sb.append(URLEncoder.encode(favorite.getTitle(), "UTF-8"));
+
+            sb.append("&description");
+            sb.append(URLEncoder.encode(favorite.getDescription(), "UTF-8"));
+
+            sb.append("&url");
+            sb.append(URLEncoder.encode(favorite.getUrl(), "UTF-8"));
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), "Something went wrong with the url. " + e.getMessage(),
+                    Toast.LENGTH_LONG).show();
+        }
+        return sb.toString();
+    }
+
+    /**
      * Async Task to add a Favorite to the online Database.
      */
     public class AddFavoritesTask extends AsyncTask <String, Void, String> {
@@ -262,6 +286,30 @@ public class FavoriteFragment extends Fragment {
             }
 
             return response;
+        }
+
+        @Override
+        public void onPostExecute (String result) {
+            try {
+                Log.i("FavoriteFragment", result);
+                JSONObject jsonObject = new JSONObject(result);
+                String status =  jsonObject.getString("result");
+                if (status.equals("success")) {
+                    Toast.makeText(getContext(),
+                            "Favorite added successfully!" ,Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getContext(),
+                            "Favorite add failed. Error: " + jsonObject.get("error"),
+                            Toast.LENGTH_LONG).show();
+                }
+
+            } catch (JSONException e) {
+                Toast.makeText(getContext(), "Something has gone wrong with the data: "
+                        + e.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e("FavoriteFragment", e.getMessage());
+
+            }
+            syncDB();
         }
     }
 }
