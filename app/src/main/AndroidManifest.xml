@@ -32,7 +32,7 @@
         <activity android:name=".player.ConvertActivity"/>
         <activity android:name=".player.PlaySavedActivity"/>
 
-        
+
     </application>
 
 </manifest>
