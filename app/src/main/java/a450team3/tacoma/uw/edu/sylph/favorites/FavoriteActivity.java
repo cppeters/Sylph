@@ -79,7 +79,7 @@ public class FavoriteActivity extends AppCompatActivity
     }
 
     /**
-     * Text for sharing on an Intent. 
+     * Text for sharing on an Intent.
      * Intent shareIntent = new Intent();
      * shareIntent.setAction(Intent.ACTION_SEND);
      * shareIntent.putExtra(Intent.EXTRA_TEXT, text);

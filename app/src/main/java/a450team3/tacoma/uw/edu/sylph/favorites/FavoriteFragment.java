@@ -1,6 +1,8 @@
 package a450team3.tacoma.uw.edu.sylph.favorites;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,6 +27,7 @@ import java.util.List;
 
 import a450team3.tacoma.uw.edu.sylph.R;
 import a450team3.tacoma.uw.edu.sylph.authenticate.LoginActivity;
+import a450team3.tacoma.uw.edu.sylph.data.FavoritesDB;
 
 /**
  * A fragment representing a list of Items.
@@ -43,6 +46,9 @@ public class FavoriteFragment extends Fragment {
 
     /** List of favorites for creating fragment. */
     private List<Favorite> mFavoritesList;
+
+    /** Database holding local data of Favorites. */
+    private FavoritesDB mFavoritesDB;
 
     /** Recycler View for cycling fragments */
     private RecyclerView mRecyclerView;
@@ -66,6 +72,7 @@ public class FavoriteFragment extends Fragment {
 
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -81,8 +88,22 @@ public class FavoriteFragment extends Fragment {
             } else {
                 mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            DownloadFavoriteTask dFT = new DownloadFavoriteTask();
-            dFT.execute(new String[] {buildFavoritesUrl()});
+            ConnectivityManager connectivityManager = (ConnectivityManager)
+                    getActivity(). getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.isConnected()) {
+                DownloadFavoriteTask dFT = new DownloadFavoriteTask();
+                dFT.execute(new String[]{buildFavoritesUrl()});
+            } else { //No Network connection
+                if (mFavoritesDB == null) {
+                    mFavoritesDB = new FavoritesDB(getActivity());
+                }
+                if (mFavoritesList == null) {
+                    mFavoritesList = mFavoritesDB.getFavorites(mAccount);
+                }
+                mRecyclerView.setAdapter(
+                        new MyFavoriteRecyclerViewAdapter(mFavoritesList, mListener));
+            }
         }
         return view;
     }
@@ -193,10 +214,22 @@ public class FavoriteFragment extends Fragment {
             if (!mFavoritesList.isEmpty()) {
                 mRecyclerView.setAdapter(new MyFavoriteRecyclerViewAdapter(
                         mFavoritesList, mListener));
+
+                if (mFavoritesDB == null) {
+                    mFavoritesDB = new FavoritesDB(getActivity());
+                }
+                mFavoritesDB.deleteFavorites();
+                for (int i = 0; i < mFavoritesList.size(); i++) {
+                    Favorite favorite = mFavoritesList.get(i);
+                    mFavoritesDB.insertFavToDB(favorite);
+                }
             }
         }
     }
 
+    /**
+     * Async Task to add a Favorite to the online Database.
+     */
     public class AddFavoritesTask extends AsyncTask <String, Void, String> {
 
         @Override

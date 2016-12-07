@@ -12,4 +12,16 @@
     <string name="desc_google_icon">Google Logo</string>
     <string name="title_activity_favorite">FavoriteActivity</string>
     <string name="youtube_player_button_text">Youtube Player</string>
+
+    <string name="create_FavDB_SQL">CREATE TABLE IF NOT EXISTS Favorites
+    (Account VARCHAR(255), Title TEXT, Description TEXT, URL TEXT) </string>
+
+    <string name="drop_FavDB_SQL" >
+        DROP TABLE IF EXISTS Favorites
+    </string>
+    <string name="fav_db_account">Account</string>
+    <string name="fav_db_title">Title</string>
+    <string name="fav_db_description">Description</string>
+    <string name="fav_db_url">URL</string>
+
 </resources>
