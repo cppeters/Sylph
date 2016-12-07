@@ -16,7 +16,7 @@
     <string name="create_FavDB_SQL">CREATE TABLE IF NOT EXISTS Favorites
     (Account VARCHAR(255), Title TEXT, Description TEXT, URL TEXT) </string>
 
-    <string name="drop_FavDB_SQL" >
+    <string name="drop_FavDB_SQL">
         DROP TABLE IF EXISTS Favorites
     </string>
     <string name="fav_db_account">Account</string>
