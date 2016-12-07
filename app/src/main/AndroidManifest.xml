@@ -14,18 +14,45 @@
         <activity
             android:name=".authenticate.LoginActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".favorites.FavoriteActivity"
             android:label="@string/title_activity_favorite"
-            android:theme="@style/AppTheme.NoActionBar"> </activity>
-        <activity android:name=".player.YoutubePlayerActivity"></activity>
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".player.YoutubePlayerActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".NavActivity"
+            android:label="@string/title_activity_nav"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.SearchActivity"
+            android:label="@string/title_youtube"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask">
+            <intent-filter android:label="@string/filter_title_youtube">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
+                <data android:scheme="https"
+                    android:host="m.youtube.com"
+                    android:pathPrefix="/watch?v=" />
+                <data android:scheme="https"
+                    android:host="m.youtube.com" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
