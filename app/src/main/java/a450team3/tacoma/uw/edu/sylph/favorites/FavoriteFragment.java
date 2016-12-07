@@ -228,6 +228,10 @@ public class FavoriteFragment extends Fragment {
         }
     }
 
+    /**
+     * Adds a favorite to the online database.
+     * @param favorite The favorite to be added.
+     */
     public void addToFavorites(Favorite favorite) {
 
         String url = createAddFavURL(favorite);
@@ -235,6 +239,11 @@ public class FavoriteFragment extends Fragment {
         aFT.execute(url);
     }
 
+    /**
+     * Creates the url for adding favorites/
+     * @param favorite Favorite to be added
+     * @return The full string url for adding. 
+     */
     private String createAddFavURL(Favorite favorite) {
         StringBuilder sb = new StringBuilder(ADD_FAVORITES_URL);
         try {
