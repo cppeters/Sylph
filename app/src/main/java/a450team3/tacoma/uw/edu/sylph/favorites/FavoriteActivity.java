@@ -8,7 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
 import a450team3.tacoma.uw.edu.sylph.R;
+import a450team3.tacoma.uw.edu.sylph.authenticate.LoginActivity;
 import a450team3.tacoma.uw.edu.sylph.player.YoutubePlayerActivity;
 
 /**
@@ -18,6 +21,8 @@ public class FavoriteActivity extends AppCompatActivity
         implements FavoriteFragment.OnListFragmentInteractionListener{
 
     public static final String YOUTUBE_CODE = "a450team3.tacoma.uw.edu.YOUTUBECODE";
+
+    protected GoogleSignInAccount mAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,9 @@ public class FavoriteActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
+
+        //Gets the account signed in as
+        mAccount = (GoogleSignInAccount) getIntent().getExtras().get(LoginActivity.ACCOUNT_CODE);
 
         if(savedInstanceState == null ||
                 getSupportFragmentManager().findFragmentById(R.id.list) == null) {
@@ -67,9 +75,17 @@ public class FavoriteActivity extends AppCompatActivity
     public String extractYoutubeURLCode(String url) {
         int index = url.indexOf("="); //Youtube players uses Youtube code to get video
         // Plus one and plus twelve used to get the code as substring.
-        String youtubeCode = url.substring(index + 1, index + 12); //Seemingly magic number
-        return youtubeCode;
+        return url.substring(index + 1, index + 12); //Seemingly magic number
     }
+
+    /**
+     * Text for sharing on an Intent. 
+     * Intent shareIntent = new Intent();
+     * shareIntent.setAction(Intent.ACTION_SEND);
+     * shareIntent.putExtra(Intent.EXTRA_TEXT, text);
+     * shareIntent.setType("text/plain");
+     * startActivity(Intent.createChooser(shareIntent, "Sending text to..."));
+     */
 
 
 }

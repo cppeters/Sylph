@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -35,6 +36,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     /** TAG for logging. **/
     private static final String TAG = "LoginActivity";
 
+    /** String for accessing account data through Intent extras */
+    public static final String ACCOUNT_CODE = "a450team3.tacoma.uw.edu.ACCOUNTCODE";
+
     /** Request Code for Google Sign In. **/
     private static final int RC_SIGN_IN = 9001;
 
@@ -46,6 +50,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     /** Progress Dialoge member variable. **/
     private ProgressDialog mProgressDialog;
+
+    /** The account the user is signed in with */
+    private GoogleSignInAccount mAccount;
 
 
     @Override
@@ -64,8 +71,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), FavoriteActivity.class);
-                startActivity(intent);
+                if (mAccount != null) {
+                    Intent intent = new Intent(getApplicationContext(), FavoriteActivity.class);
+                    //Sends as GoogleSignInAccount
+                    intent.putExtra(ACCOUNT_CODE, mAccount);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "You must sign in to view favorites",
+                            Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 
@@ -240,8 +255,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
-            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
+            mAccount = result.getSignInAccount();
+            mStatusTextView.setText(getString(R.string.signed_in_fmt, mAccount.getDisplayName()));
             updateUI(true);
         } else {
             // Signed out, show unauthenticated UI.
@@ -252,6 +267,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public void openYoutubePlayer() {
         Intent intent = new Intent(this, YoutubePlayerActivity.class);
         startActivity(intent);
+    }
+
+    public GoogleSignInAccount getmAccount() {
+        return mAccount;
     }
 
 }

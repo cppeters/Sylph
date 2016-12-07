@@ -18,10 +18,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.List;
 
 import a450team3.tacoma.uw.edu.sylph.R;
+import a450team3.tacoma.uw.edu.sylph.authenticate.LoginActivity;
 
 /**
  * A fragment representing a list of Items.
@@ -47,6 +50,9 @@ public class FavoriteFragment extends Fragment {
     /** Listener for List interaction */
     private OnListFragmentInteractionListener mListener;
 
+    /** Email for the account currently logged in. Acquired from Intent Extras. */
+    private String mAccount;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -65,6 +71,7 @@ public class FavoriteFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite_list, container, false);
 
+        mAccount = getActivity().getIntent().getStringExtra(LoginActivity.ACCOUNT_CODE);
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -75,7 +82,7 @@ public class FavoriteFragment extends Fragment {
                 mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             DownloadFavoriteTask dFT = new DownloadFavoriteTask();
-            dFT.execute(new String[] {FAVORITES_URL});
+            dFT.execute(new String[] {buildFavoritesUrl()});
         }
         return view;
     }
@@ -96,6 +103,24 @@ public class FavoriteFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    /** Method to form the url to get favorites from database.
+     *
+     * @return Returns the proper url string.
+     */
+
+    private String buildFavoritesUrl() {
+        StringBuilder sb = new StringBuilder(FAVORITES_URL);
+        try {
+            sb.append("&email=");
+            sb.append(URLEncoder.encode(mAccount, "UTF-8"));
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), "Something went wrong with the url.",
+                    Toast.LENGTH_LONG).show();
+        }
+        return sb.toString();
+
     }
 
     /**
@@ -169,6 +194,36 @@ public class FavoriteFragment extends Fragment {
                 mRecyclerView.setAdapter(new MyFavoriteRecyclerViewAdapter(
                         mFavoritesList, mListener));
             }
+        }
+    }
+
+    public class AddFavoritesTask extends AsyncTask <String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            for (String s : urls) {
+                try {
+                    URL urlObject = new URL(s);
+                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+                    InputStream content = urlConnection.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+                    String str = "";
+                    while ((str = reader.readLine()) != null) {
+                        response += str;
+                    }
+                } catch (Exception e) {
+                    response = "Unable to add favorites. " + e.getMessage();
+                } finally {
+                    if (urlConnection != null) {
+                        urlConnection.disconnect();
+                    }
+                }
+            }
+
+            return response;
         }
     }
 }
