@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -44,6 +47,9 @@ public class FavoriteFragment extends Fragment {
     private static final String FAVORITES_URL =
             "http://cssgate.insttech.washington.edu/~_450team3/getFavorites.php?cmd=favorites";
 
+    private static final String ADD_FAVORITES_URL =
+            "http://cssgate.insttech.washington.edu/~_450team3/addFavorite.php?";
+
     /** List of favorites for creating fragment. */
     private List<Favorite> mFavoritesList;
 
@@ -57,7 +63,7 @@ public class FavoriteFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
 
     /** Email for the account currently logged in. Acquired from Intent Extras. */
-    private String mAccount;
+    private GoogleSignInAccount mAccount;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -78,7 +84,8 @@ public class FavoriteFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite_list, container, false);
 
-        mAccount = getActivity().getIntent().getStringExtra(LoginActivity.ACCOUNT_CODE);
+        Bundle bundle = getActivity().getIntent().getExtras();
+        mAccount = (GoogleSignInAccount) bundle.get(LoginActivity.ACCOUNT_CODE);
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -94,16 +101,16 @@ public class FavoriteFragment extends Fragment {
             if (networkInfo != null && networkInfo.isConnected()) {
                 DownloadFavoriteTask dFT = new DownloadFavoriteTask();
                 dFT.execute(new String[]{buildFavoritesUrl()});
-            } else { //No Network connection
-                if (mFavoritesDB == null) {
-                    mFavoritesDB = new FavoritesDB(getActivity());
-                }
-                if (mFavoritesList == null) {
-                    mFavoritesList = mFavoritesDB.getFavorites(mAccount);
-                }
-                mRecyclerView.setAdapter(
-                        new MyFavoriteRecyclerViewAdapter(mFavoritesList, mListener));
+            } //Use local db no matter what
+            if (mFavoritesDB == null) {
+                mFavoritesDB = new FavoritesDB(getActivity());
             }
+            if (mFavoritesList == null) {
+                mFavoritesList = mFavoritesDB.getFavorites(mAccount.getEmail());
+            }
+            mRecyclerView.setAdapter(
+                    new MyFavoriteRecyclerViewAdapter(mFavoritesList, mListener));
+
         }
         return view;
     }
@@ -135,7 +142,7 @@ public class FavoriteFragment extends Fragment {
         StringBuilder sb = new StringBuilder(FAVORITES_URL);
         try {
             sb.append("&email=");
-            sb.append(URLEncoder.encode(mAccount, "UTF-8"));
+            sb.append(URLEncoder.encode(mAccount.getEmail(), "UTF-8"));
         } catch (Exception e) {
             Toast.makeText(getActivity(), "Something went wrong with the url.",
                     Toast.LENGTH_LONG).show();
@@ -212,8 +219,6 @@ public class FavoriteFragment extends Fragment {
                 Log.e("Favorite Fragment", "Something has gone wrong with JSON.");
             }
             if (!mFavoritesList.isEmpty()) {
-                mRecyclerView.setAdapter(new MyFavoriteRecyclerViewAdapter(
-                        mFavoritesList, mListener));
 
                 if (mFavoritesDB == null) {
                     mFavoritesDB = new FavoritesDB(getActivity());
