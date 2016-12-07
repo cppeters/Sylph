@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Sylph</string>
+    <string name="group_email">team3tcss450@gmail.com</string>
     <string name="action_settings">Settings</string>
     <string name="signed_out">Signed Out</string>
     <string name="loading">Loading...</string>
@@ -16,12 +17,26 @@
     <string name="create_FavDB_SQL">CREATE TABLE IF NOT EXISTS Favorites
     (Account VARCHAR(255), Title TEXT, Description TEXT, URL TEXT) </string>
 
-    <string name="drop_FavDB_SQL" >
+    <string name="drop_FavDB_SQL">
         DROP TABLE IF EXISTS Favorites
     </string>
     <string name="fav_db_account">Account</string>
     <string name="fav_db_title">Title</string>
     <string name="fav_db_description">Description</string>
     <string name="fav_db_url">URL</string>
+    <string name="title_activity_nav">NavActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Nav List -->
+    <string name="home_text">Home</string>
+    <string name="youtube_text">YouTube</string>
+    <string name="fav_text">Favorites</string>
+    <string name="search_text">Search</string>
+    <string name="sign_out_text">Sign Out</string>
+
+    <string name="title_youtube">Title YouTube</string>
+    <string name="filter_title_youtube">Title YouTube</string>
 
 </resources>

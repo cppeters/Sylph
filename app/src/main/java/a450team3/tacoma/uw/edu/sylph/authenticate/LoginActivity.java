@@ -1,16 +1,15 @@
 package a450team3.tacoma.uw.edu.sylph.authenticate;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -23,14 +22,14 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import a450team3.tacoma.uw.edu.sylph.NavActivity;
 import a450team3.tacoma.uw.edu.sylph.R;
-import a450team3.tacoma.uw.edu.sylph.player.YoutubePlayerActivity;
-import a450team3.tacoma.uw.edu.sylph.favorites.FavoriteActivity;
+import a450team3.tacoma.uw.edu.sylph.activities.HomeActivity;
 
 /**
  * Class for a Login Activity
  */
-public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
+public class LoginActivity extends NavActivity implements GoogleApiClient.OnConnectionFailedListener,
                                                                 View.OnClickListener{
 
     /** TAG for logging. **/
@@ -38,6 +37,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     /** String for accessing account data through Intent extras */
     public static final String ACCOUNT_CODE = "a450team3.tacoma.uw.edu.ACCOUNTCODE";
+
+
+    /** The account the user is signed in with */
+    public static GoogleSignInAccount GOOGLE_ACCOUNT;
 
     /** Request Code for Google Sign In. **/
     private static final int RC_SIGN_IN = 9001;
@@ -51,14 +54,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     /** Progress Dialoge member variable. **/
     private ProgressDialog mProgressDialog;
 
-    /** The account the user is signed in with */
-    private GoogleSignInAccount mAccount;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        //setContentView(R.layout.activity_login);
+
+        getLayoutInflater().inflate(R.layout.activity_login, frameLayout);
+
 
         // Views
         mStatusTextView = (TextView) findViewById(R.id.status);
@@ -67,22 +70,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mAccount != null) {
-                    Intent intent = new Intent(getApplicationContext(), FavoriteActivity.class);
-                    //Sends as GoogleSignInAccount
-                    intent.putExtra(ACCOUNT_CODE, mAccount);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getApplicationContext(), "You must sign in to view favorites",
-                            Toast.LENGTH_LONG).show();
-                }
-
-            }
-        });
+        findViewById(R.id.home_button).setOnClickListener(this);
 
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -107,6 +95,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         // difference.
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
+
+        Button homeButton = (Button) findViewById(R.id.home_button);
     }
 
 
@@ -155,8 +145,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             case R.id.sign_out_button:
                 signOut();
                 break;
-            case R.id.to_player_button:
-                openYoutubePlayer();
+            case R.id.home_button:
+                goHome();
                 break;
         }
     }
@@ -187,17 +177,22 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
      * Update the UI whenever sign in or out.
      * @param signedIn True when user is signed in.
      */
-    private void updateUI(boolean signedIn) {
+    public void updateUI(boolean signedIn) {
         if (signedIn) {
+            /*Intent intent = new Intent(this, HomeActivity.class);
+            if (GOOGLE_ACCOUNT != null) {
+                intent.putExtra(LoginActivity.ACCOUNT_CODE, GOOGLE_ACCOUNT);
+            }
+            startActivity(intent);*/
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
-            findViewById(R.id.fab).setVisibility(View.VISIBLE);
+            findViewById(R.id.home_button).setVisibility(View.VISIBLE);
         } else {
             mStatusTextView.setText(R.string.signed_out);
 
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
             findViewById(R.id.sign_out_button).setVisibility(View.GONE);
-            findViewById(R.id.fab).setVisibility(View.GONE);
+            findViewById(R.id.home_button).setVisibility(View.GONE);
         }
     }
 
@@ -255,8 +250,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
-            mAccount = result.getSignInAccount();
-            mStatusTextView.setText(getString(R.string.signed_in_fmt, mAccount.getDisplayName()));
+            GOOGLE_ACCOUNT = result.getSignInAccount();
+            mStatusTextView.setText(getString(R.string.signed_in_fmt, GOOGLE_ACCOUNT.getDisplayName()));
             updateUI(true);
         } else {
             // Signed out, show unauthenticated UI.
@@ -264,13 +259,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
-    public void openYoutubePlayer() {
-        Intent intent = new Intent(this, YoutubePlayerActivity.class);
-        startActivity(intent);
-    }
 
     public GoogleSignInAccount getmAccount() {
-        return mAccount;
+        return GOOGLE_ACCOUNT;
     }
 
+    public void goHome() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        if (GOOGLE_ACCOUNT != null) {
+            intent.putExtra(LoginActivity.ACCOUNT_CODE, GOOGLE_ACCOUNT);
+        }
+        startActivity(intent);
+    }
 }
