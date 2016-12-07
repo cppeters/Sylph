@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -44,6 +51,9 @@ public class FavoriteFragment extends Fragment {
     private static final String FAVORITES_URL =
             "http://cssgate.insttech.washington.edu/~_450team3/getFavorites.php?cmd=favorites";
 
+    private static final String ADD_FAVORITES_URL =
+            "http://cssgate.insttech.washington.edu/~_450team3/addFavorite.php?";
+
     /** List of favorites for creating fragment. */
     private List<Favorite> mFavoritesList;
 
@@ -57,7 +67,7 @@ public class FavoriteFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
 
     /** Email for the account currently logged in. Acquired from Intent Extras. */
-    private String mAccount;
+    private GoogleSignInAccount mAccount;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -78,7 +88,8 @@ public class FavoriteFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite_list, container, false);
 
-        mAccount = getActivity().getIntent().getStringExtra(LoginActivity.ACCOUNT_CODE);
+        Bundle bundle = getActivity().getIntent().getExtras();
+        mAccount = (GoogleSignInAccount) bundle.get(LoginActivity.ACCOUNT_CODE);
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -88,22 +99,17 @@ public class FavoriteFragment extends Fragment {
             } else {
                 mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            ConnectivityManager connectivityManager = (ConnectivityManager)
-                    getActivity(). getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-            if (networkInfo != null && networkInfo.isConnected()) {
-                DownloadFavoriteTask dFT = new DownloadFavoriteTask();
-                dFT.execute(new String[]{buildFavoritesUrl()});
-            } else { //No Network connection
-                if (mFavoritesDB == null) {
-                    mFavoritesDB = new FavoritesDB(getActivity());
-                }
-                if (mFavoritesList == null) {
-                    mFavoritesList = mFavoritesDB.getFavorites(mAccount);
-                }
-                mRecyclerView.setAdapter(
-                        new MyFavoriteRecyclerViewAdapter(mFavoritesList, mListener));
+            syncDB();
+            //Use local db no matter what
+            if (mFavoritesDB == null) {
+                mFavoritesDB = new FavoritesDB(getActivity());
             }
+            if (mFavoritesList == null) {
+                mFavoritesList = mFavoritesDB.getFavorites(mAccount.getEmail());
+            }
+            mRecyclerView.setAdapter(
+                    new MyFavoriteRecyclerViewAdapter(mFavoritesList, mListener));
+
         }
         return view;
     }
@@ -126,23 +132,6 @@ public class FavoriteFragment extends Fragment {
         mListener = null;
     }
 
-    /** Method to form the url to get favorites from database.
-     *
-     * @return Returns the proper url string.
-     */
-
-    private String buildFavoritesUrl() {
-        StringBuilder sb = new StringBuilder(FAVORITES_URL);
-        try {
-            sb.append("&email=");
-            sb.append(URLEncoder.encode(mAccount, "UTF-8"));
-        } catch (Exception e) {
-            Toast.makeText(getActivity(), "Something went wrong with the url.",
-                    Toast.LENGTH_LONG).show();
-        }
-        return sb.toString();
-
-    }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -212,8 +201,6 @@ public class FavoriteFragment extends Fragment {
                 Log.e("Favorite Fragment", "Something has gone wrong with JSON.");
             }
             if (!mFavoritesList.isEmpty()) {
-                mRecyclerView.setAdapter(new MyFavoriteRecyclerViewAdapter(
-                        mFavoritesList, mListener));
 
                 if (mFavoritesDB == null) {
                     mFavoritesDB = new FavoritesDB(getActivity());
@@ -225,6 +212,57 @@ public class FavoriteFragment extends Fragment {
                 }
             }
         }
+    }
+
+    /**
+     * Method to download data from online database if available, and sync with local DB
+     * in async task.
+     */
+    public void syncDB() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                getActivity(). getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            DownloadFavoriteTask dFT = new DownloadFavoriteTask();
+            dFT.execute(new String[]{FAVORITES_URL});
+        }
+    }
+
+    /**
+     * Adds a favorite to the online database.
+     * @param favorite The favorite to be added.
+     */
+    public void addToFavorites(Favorite favorite) {
+
+        String url = createAddFavURL(favorite);
+        AddFavoritesTask aFT = new AddFavoritesTask();
+        aFT.execute(url);
+    }
+
+    /**
+     * Creates the url for adding favorites/
+     * @param favorite Favorite to be added
+     * @return The full string url for adding. 
+     */
+    private String createAddFavURL(Favorite favorite) {
+        StringBuilder sb = new StringBuilder(ADD_FAVORITES_URL);
+        try {
+            sb.append("account=");
+            sb.append(URLEncoder.encode(favorite.getAccount(), "UTF-8"));
+
+            sb.append("&title=");
+            sb.append(URLEncoder.encode(favorite.getTitle(), "UTF-8"));
+
+            sb.append("&description");
+            sb.append(URLEncoder.encode(favorite.getDescription(), "UTF-8"));
+
+            sb.append("&url");
+            sb.append(URLEncoder.encode(favorite.getUrl(), "UTF-8"));
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), "Something went wrong with the url. " + e.getMessage(),
+                    Toast.LENGTH_LONG).show();
+        }
+        return sb.toString();
     }
 
     /**
@@ -257,6 +295,30 @@ public class FavoriteFragment extends Fragment {
             }
 
             return response;
+        }
+
+        @Override
+        public void onPostExecute (String result) {
+            try {
+                Log.i("FavoriteFragment", result);
+                JSONObject jsonObject = new JSONObject(result);
+                String status =  jsonObject.getString("result");
+                if (status.equals("success")) {
+                    Toast.makeText(getContext(),
+                            "Favorite added successfully!" ,Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getContext(),
+                            "Favorite add failed. Error: " + jsonObject.get("error"),
+                            Toast.LENGTH_LONG).show();
+                }
+
+            } catch (JSONException e) {
+                Toast.makeText(getContext(), "Something has gone wrong with the data: "
+                        + e.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e("FavoriteFragment", e.getMessage());
+
+            }
+            syncDB();
         }
     }
 }
