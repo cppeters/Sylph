@@ -70,7 +70,7 @@ public class FavoritesDB  {
         contentValues.put(mDBTitleString, favorite.getTitle());
         contentValues.put(mDBDescString, favorite.getDescription());
         contentValues.put(mDBURLString, favorite.getUrl());
-        long rowId = mFavSQLiteDB.insert("Favorite", null, contentValues);
+        long rowId = mFavSQLiteDB.insert("Favorites", null, contentValues);
         return rowId != -1; //If insert fails, rowID will equal -1
     }
 
@@ -119,6 +119,7 @@ public class FavoritesDB  {
             list.add(favorite);
             cursor.moveToNext();
         }
+        cursor.close();
         return list;
     }
 
