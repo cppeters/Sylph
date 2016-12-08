@@ -27,17 +27,11 @@
         <activity
             android:name=".favorites.FavoriteActivity"
             android:label="@string/title_activity_favorite"
-<<<<<<< HEAD
             android:theme="@style/AppTheme.NoActionBar"> </activity>
-        <activity android:name=".player.YoutubePlayerActivity"/>
         <activity android:name=".player.SelectionActivity"/>
         <activity android:name=".player.ConvertActivity"/>
         <activity android:name=".player.PlaySavedActivity"/>
 
-        
-=======
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".player.YoutubePlayerActivity"
             android:launchMode="singleTask" />
@@ -64,7 +58,6 @@
                     android:host="m.youtube.com" />
             </intent-filter>
         </activity>
->>>>>>> refs/remotes/origin/master
     </application>
 
 </manifest>
