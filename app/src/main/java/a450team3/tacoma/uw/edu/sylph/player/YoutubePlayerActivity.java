@@ -41,9 +41,6 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
 
         //Populating the video_List with video_id
         mVideo_List = new ArrayList<String>();
-        mVideo_List.add("PT2_F-1esPk"); //The Chainsmokers - Closer
-        mVideo_List.add("UprcpdwuwCg"); //twenty one pilots - Heathens
-        mVideo_List.add("Pw-0pbY9JeU"); //twenty one pilots - Ride
         mVideo_List.add("RgKAFK5djSk"); //Wiz Khalifa - See You Again
         mVideo_List.add("09R8_2nJtjg"); //Maroon 5 - Sugar
         if ((intent.getStringExtra(FavoriteActivity.YOUTUBE_CODE)) != null) {
