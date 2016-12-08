@@ -211,6 +211,8 @@ public class FavoriteFragment extends Fragment {
                     mFavoritesDB.insertFavToDB(favorite);
                 }
             }
+            mRecyclerView.setAdapter(
+                    new MyFavoriteRecyclerViewAdapter(mFavoritesList, mListener));
         }
     }
 

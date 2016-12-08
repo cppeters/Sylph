@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
+import a450team3.tacoma.uw.edu.sylph.NavActivity;
 import a450team3.tacoma.uw.edu.sylph.R;
 import a450team3.tacoma.uw.edu.sylph.authenticate.LoginActivity;
 import a450team3.tacoma.uw.edu.sylph.player.YoutubePlayerActivity;
@@ -17,7 +18,7 @@ import a450team3.tacoma.uw.edu.sylph.player.YoutubePlayerActivity;
 /**
  * Activity for holding and interacting with favorites list.
  */
-public class FavoriteActivity extends AppCompatActivity
+public class FavoriteActivity extends NavActivity
         implements FavoriteFragment.OnListFragmentInteractionListener{
 
     public static final String YOUTUBE_CODE = "a450team3.tacoma.uw.edu.YOUTUBECODE";
@@ -27,8 +28,8 @@ public class FavoriteActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favorite);
-
+        //setContentView(R.layout.activity_favorite);
+        getLayoutInflater().inflate(R.layout.activity_favorite, frameLayout);
         //Gets the account signed in as
         mAccount = (GoogleSignInAccount) getIntent().getExtras().get(LoginActivity.ACCOUNT_CODE);
 
