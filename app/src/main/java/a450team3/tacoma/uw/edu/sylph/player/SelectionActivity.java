@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import a450team3.tacoma.uw.edu.sylph.R;
 public class SelectionActivity extends AppCompatActivity {
@@ -21,6 +22,7 @@ public class SelectionActivity extends AppCompatActivity {
         playAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),"Play the mp3 file",Toast.LENGTH_LONG).show();
                 startActivity(new Intent(view.getContext(),PlaySavedActivity.class));
             }
         });
@@ -28,6 +30,7 @@ public class SelectionActivity extends AppCompatActivity {
         playVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),"Play the Video in Youtube",Toast.LENGTH_LONG).show();
                 startActivity(new Intent(view.getContext(),YoutubePlayerActivity.class));
             }
         });
@@ -35,6 +38,7 @@ public class SelectionActivity extends AppCompatActivity {
         convert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),"Convert Youtube video to mp3",Toast.LENGTH_LONG).show();
                 startActivity(new Intent(view.getContext(),ConvertActivity.class));
             }
         });
