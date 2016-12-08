@@ -2,15 +2,10 @@ package a450team3.tacoma.uw.edu.sylph.favorites;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
-import a450team3.tacoma.uw.edu.sylph.NavActivity;
+import a450team3.tacoma.uw.edu.sylph.navigation.NavActivity;
 import a450team3.tacoma.uw.edu.sylph.R;
 import a450team3.tacoma.uw.edu.sylph.authenticate.LoginActivity;
 import a450team3.tacoma.uw.edu.sylph.player.YoutubePlayerActivity;
