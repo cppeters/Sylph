@@ -12,6 +12,7 @@ import a450team3.tacoma.uw.edu.sylph.NavActivity;
 import a450team3.tacoma.uw.edu.sylph.R;
 import a450team3.tacoma.uw.edu.sylph.authenticate.LoginActivity;
 import a450team3.tacoma.uw.edu.sylph.favorites.FavoriteActivity;
+import a450team3.tacoma.uw.edu.sylph.player.SelectionActivity;
 import a450team3.tacoma.uw.edu.sylph.player.YoutubePlayerActivity;
 
 public class HomeActivity extends NavActivity {
@@ -29,7 +30,7 @@ public class HomeActivity extends NavActivity {
     }
 
     public void youtubeClick(View v) {
-        Intent intent = new Intent(this, YoutubePlayerActivity.class);
+        Intent intent = new Intent(this, SelectionActivity.class);
         startActivity(intent);
     }
 

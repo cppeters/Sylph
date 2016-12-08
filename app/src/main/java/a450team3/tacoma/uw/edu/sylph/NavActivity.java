@@ -21,6 +21,7 @@ import a450team3.tacoma.uw.edu.sylph.activities.HomeActivity;
 import a450team3.tacoma.uw.edu.sylph.activities.SearchActivity;
 import a450team3.tacoma.uw.edu.sylph.authenticate.LoginActivity;
 import a450team3.tacoma.uw.edu.sylph.favorites.FavoriteActivity;
+import a450team3.tacoma.uw.edu.sylph.player.SelectionActivity;
 import a450team3.tacoma.uw.edu.sylph.player.YoutubePlayerActivity;
 
 public class NavActivity extends AppCompatActivity
@@ -42,8 +43,11 @@ public class NavActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent=Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_EMAIL);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//Min SDK 15
+                startActivity(intent);
+                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
             }
         });
 
@@ -100,7 +104,7 @@ public class NavActivity extends AppCompatActivity
             intent.putExtra(LoginActivity.ACCOUNT_CODE, LoginActivity.GOOGLE_ACCOUNT);
             startActivity(intent);
         } else if (id == R.id.nav_youtube) {
-            Intent intent = new Intent(this, YoutubePlayerActivity.class);
+            Intent intent = new Intent(this, SelectionActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_favorites) {
             Intent intent = new Intent(this, FavoriteActivity.class);
@@ -113,9 +117,13 @@ public class NavActivity extends AppCompatActivity
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_share) {
-
+            Intent intent=Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_EMAIL);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         } else if (id == R.id.nav_send) {
-
+            Intent intent=Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_EMAIL);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
