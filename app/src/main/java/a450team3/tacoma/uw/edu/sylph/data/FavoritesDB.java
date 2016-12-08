@@ -126,7 +126,7 @@ public class FavoritesDB  {
     /**
      * Inner class to help creation and version control of the database.
      */
-    private class FavoriteDBHelper extends SQLiteOpenHelper {
+    public class FavoriteDBHelper extends SQLiteOpenHelper {
 
         /** SQL string for creating the SQLite DB. */
         private final String create_FavDB_SQL;

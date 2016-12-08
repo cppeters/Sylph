@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A favorite object will handle the data stored on a database,
@@ -109,6 +110,30 @@ public class Favorite {
             }
         }
         return reason;
+    }
+
+    /**
+     * Method to check if Object is equal to another.
+     * @param obj The other Object
+     * @return true if equal
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        Favorite theOther = (Favorite) obj;
+        return this.getAccount().equals(theOther.getAccount())
+                && this.getTitle().equals(theOther.getTitle())
+                && this.getDescription().equals(theOther.getDescription())
+                && this.getUrl().equals(theOther.getUrl());
+
     }
 
 }
