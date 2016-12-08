@@ -23,6 +23,7 @@ import static org.mockito.Mockito.when;
 
 /**
  * Testing class for Favorites Class.
+ * Mockito Testing is not playing nicely. 
  * Created by andyb on 12/6/2016.
  */
 

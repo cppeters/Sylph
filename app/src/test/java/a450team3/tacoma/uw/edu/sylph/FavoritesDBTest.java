@@ -22,11 +22,12 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 /**
- * Class to handle testing of FavroitesDB
+ * Class to handle testing of FavroitesDB.
+ * Mockito Testing was not nice, and did not function well.
  * Created by andyb on 12/7/2016.
  */
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(org.mockito.junit.MockitoJUnitRunner.class)
 public class FavoritesDBTest {
 
     @Mock
@@ -63,6 +64,9 @@ public class FavoritesDBTest {
     private List<Favorite> mList;
 
 
+    /**
+     * Setup method for DB Test.
+     */
     @Before
     public void before() {
         when(mockContext.getString(R.string.fav_db_account)).thenReturn(mDBAccountString);
