@@ -24,7 +24,7 @@ public class PlaySavedActivity extends Activity {
     public ArrayList<String> pathList;
     public MediaPlayer mediaPlayer;
     public int i;
-    public final static String FILEPATH = Environment.getExternalStorageDirectory().toString() + "/Sylph/";
+    public static String FILEPATH = Environment.getExternalStorageDirectory().toString() + "/Sylph/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +102,7 @@ public class PlaySavedActivity extends Activity {
 
                         mediaPlayer.start();
                     }
+                    Toast.makeText(getApplicationContext(),"Play the Next Song",Toast.LENGTH_LONG).show();
                     TextView title = (TextView) findViewById(R.id.songName);
                     title.setText(pathList.get(i));
                 }
@@ -113,6 +114,7 @@ public class PlaySavedActivity extends Activity {
                 public void onClick(View view) {
                     if (mediaPlayer.isPlaying() == true) {
                         mediaPlayer.pause();
+                        Toast.makeText(getApplicationContext(),"Pause the Audio",Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -122,6 +124,7 @@ public class PlaySavedActivity extends Activity {
                 public void onClick(View view) {
                     if (mediaPlayer.isPlaying() == false) {
                         mediaPlayer.start();
+                        Toast.makeText(getApplicationContext(),"Play the Audio",Toast.LENGTH_LONG).show();
                     }
                 }
             });
