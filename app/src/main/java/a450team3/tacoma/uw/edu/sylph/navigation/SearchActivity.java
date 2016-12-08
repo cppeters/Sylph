@@ -1,11 +1,9 @@
-package a450team3.tacoma.uw.edu.sylph.activities;
+package a450team3.tacoma.uw.edu.sylph.navigation;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import a450team3.tacoma.uw.edu.sylph.NavActivity;
 import a450team3.tacoma.uw.edu.sylph.R;
 
 public class SearchActivity extends NavActivity {
@@ -15,7 +13,6 @@ public class SearchActivity extends NavActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_search);
         getLayoutInflater().inflate(R.layout.activity_search, frameLayout);
-
         Uri webpage = Uri.parse("http://m.youtube.com");
         Intent webIntent = new Intent(Intent.ACTION_VIEW, webpage);
         startActivity(webIntent);
@@ -23,5 +20,8 @@ public class SearchActivity extends NavActivity {
         Uri data = webIntent.getData();
 
         System.out.println("Data: " + data.toString());
+
     }
+
+
 }

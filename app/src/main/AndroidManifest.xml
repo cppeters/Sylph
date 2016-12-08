@@ -27,44 +27,40 @@
         <activity
             android:name=".favorites.FavoriteActivity"
             android:label="@string/title_activity_favorite"
-<<<<<<< HEAD
             android:theme="@style/AppTheme.NoActionBar"> </activity>
-        <activity android:name=".player.YoutubePlayerActivity"/>
-        <activity android:name=".player.SelectionActivity"/>
-        <activity android:name=".player.ConvertActivity"/>
-        <activity android:name=".player.PlaySavedActivity"/>
-
-        
-=======
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".player.YoutubePlayerActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".NavActivity"
+            android:name=".navigation.NavActivity"
             android:label="@string/title_activity_nav"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.HomeActivity"
+            android:name=".navigation.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.SearchActivity"
+        <activity
+            android:name=".navigation.SearchActivity"
             android:label="@string/title_youtube"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter android:label="@string/filter_title_youtube">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
-                <data android:scheme="https"
+
+                <data
                     android:host="m.youtube.com"
-                    android:pathPrefix="/watch?v=" />
-                <data android:scheme="https"
-                    android:host="m.youtube.com" />
+                    android:scheme="https" />
             </intent-filter>
         </activity>
->>>>>>> refs/remotes/origin/master
+        <activity android:name=".player.ConvertActivity"
+            android:launchMode="singleTask" />
+        <activity android:name=".player.PlaySavedActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".player.SelectionActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>
