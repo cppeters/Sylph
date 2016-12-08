@@ -1,19 +1,15 @@
-package a450team3.tacoma.uw.edu.sylph.activities;
+package a450team3.tacoma.uw.edu.sylph.navigation;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
-import a450team3.tacoma.uw.edu.sylph.NavActivity;
 import a450team3.tacoma.uw.edu.sylph.R;
 import a450team3.tacoma.uw.edu.sylph.authenticate.LoginActivity;
 import a450team3.tacoma.uw.edu.sylph.favorites.FavoriteActivity;
 import a450team3.tacoma.uw.edu.sylph.player.SelectionActivity;
-import a450team3.tacoma.uw.edu.sylph.player.YoutubePlayerActivity;
 
 public class HomeActivity extends NavActivity {
 

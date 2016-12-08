@@ -1,11 +1,8 @@
-package a450team3.tacoma.uw.edu.sylph;
+package a450team3.tacoma.uw.edu.sylph.navigation;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,12 +14,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
-import a450team3.tacoma.uw.edu.sylph.activities.HomeActivity;
-import a450team3.tacoma.uw.edu.sylph.activities.SearchActivity;
+import a450team3.tacoma.uw.edu.sylph.R;
 import a450team3.tacoma.uw.edu.sylph.authenticate.LoginActivity;
 import a450team3.tacoma.uw.edu.sylph.favorites.FavoriteActivity;
 import a450team3.tacoma.uw.edu.sylph.player.SelectionActivity;
-import a450team3.tacoma.uw.edu.sylph.player.YoutubePlayerActivity;
 
 public class NavActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

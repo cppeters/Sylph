@@ -1,6 +1,5 @@
 package a450team3.tacoma.uw.edu.sylph.authenticate;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,9 +21,9 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
-import a450team3.tacoma.uw.edu.sylph.NavActivity;
+import a450team3.tacoma.uw.edu.sylph.navigation.NavActivity;
 import a450team3.tacoma.uw.edu.sylph.R;
-import a450team3.tacoma.uw.edu.sylph.activities.HomeActivity;
+import a450team3.tacoma.uw.edu.sylph.navigation.HomeActivity;
 
 /**
  * Class for a Login Activity

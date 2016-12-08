@@ -28,22 +28,18 @@
             android:name=".favorites.FavoriteActivity"
             android:label="@string/title_activity_favorite"
             android:theme="@style/AppTheme.NoActionBar"> </activity>
-        <activity android:name=".player.SelectionActivity"/>
-        <activity android:name=".player.ConvertActivity"/>
-        <activity android:name=".player.PlaySavedActivity"/>
-
         <activity
             android:name=".player.YoutubePlayerActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".NavActivity"
+            android:name=".navigation.NavActivity"
             android:label="@string/title_activity_nav"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.HomeActivity"
+            android:name=".navigation.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.SearchActivity"
+            android:name=".navigation.SearchActivity"
             android:label="@string/title_youtube"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
