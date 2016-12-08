@@ -19,10 +19,15 @@ import a450team3.tacoma.uw.edu.sylph.authenticate.LoginActivity;
 import a450team3.tacoma.uw.edu.sylph.favorites.FavoriteActivity;
 import a450team3.tacoma.uw.edu.sylph.player.SelectionActivity;
 
+/**
+ * Navigation Activity Class
+ * created by cppeters
+ */
 public class NavActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
+    // Framelayout for Activities that extend NavActivity
     protected FrameLayout frameLayout;
 
     @Override
@@ -41,8 +46,6 @@ public class NavActivity extends AppCompatActivity
                 Intent intent=Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_EMAIL);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//Min SDK 15
                 startActivity(intent);
-                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
             }
         });
 
@@ -94,6 +97,7 @@ public class NavActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        // Depending on selection call activity
         if (id == R.id.nav_home) {
             Intent intent = new Intent(this, HomeActivity.class);
             intent.putExtra(LoginActivity.ACCOUNT_CODE, LoginActivity.GOOGLE_ACCOUNT);

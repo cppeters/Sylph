@@ -22,7 +22,10 @@ import java.util.List;
 import a450team3.tacoma.uw.edu.sylph.R;
 import a450team3.tacoma.uw.edu.sylph.favorites.FavoriteActivity;
 
-
+/**
+ * YouTube Player Activity Class, plays the saved Video's
+ * created by bayled
+ */
 public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
     //API_KEY for the connecting with youtube API
     public static final String API_KEY = "AIzaSyBnS5M7WoEylYNk-2yqbku-8seBTMB6E6M";
@@ -34,7 +37,7 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
 
         // attaching layout xml
         setContentView(R.layout.activity_youtube_player);
-//sdfsdfsdfsdfsdf
+
         //Getting Extra if there is any
         Intent intent = getIntent();
 
@@ -147,7 +150,7 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements YouTub
             @Override
             public void onPlaying() {
                 Context context = getApplicationContext();
-                CharSequence text = "Playing [Title]";
+                CharSequence text = "Playing";
                 int duration = Toast.LENGTH_SHORT;
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();

@@ -17,7 +17,10 @@ import java.io.File;
 
 import a450team3.tacoma.uw.edu.sylph.R;
 
-
+/**
+ * Convert Activity Class, that loads website for MP3 Converter
+ * created by bayled
+ */
 public class ConvertActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1;
 
@@ -51,7 +54,6 @@ public class ConvertActivity extends AppCompatActivity {
                 }
                 DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                 request.allowScanningByMediaScanner();
-                //request.setAllowedOverRoaming(false).setTitle("Demo");
                 request.setAllowedNetworkTypes(
                         DownloadManager.Request.NETWORK_WIFI
                                 | DownloadManager.Request.NETWORK_MOBILE);

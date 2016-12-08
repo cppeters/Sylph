@@ -26,7 +26,8 @@ import a450team3.tacoma.uw.edu.sylph.R;
 import a450team3.tacoma.uw.edu.sylph.navigation.HomeActivity;
 
 /**
- * Class for a Login Activity
+ * Class for a Login Activity, adapted from Google Android Tutorial
+ * created by cppeters
  */
 public class LoginActivity extends NavActivity implements GoogleApiClient.OnConnectionFailedListener,
                                                                 View.OnClickListener{
@@ -57,8 +58,6 @@ public class LoginActivity extends NavActivity implements GoogleApiClient.OnConn
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_login);
-
         getLayoutInflater().inflate(R.layout.activity_login, frameLayout);
 
 
@@ -259,10 +258,9 @@ public class LoginActivity extends NavActivity implements GoogleApiClient.OnConn
     }
 
 
-    public GoogleSignInAccount getmAccount() {
-        return GOOGLE_ACCOUNT;
-    }
-
+    /**
+     * Method for the Home Button to start the HomeActivity.class
+     */
     public void goHome() {
         Intent intent = new Intent(this, HomeActivity.class);
         if (GOOGLE_ACCOUNT != null) {
