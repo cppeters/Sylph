@@ -16,15 +16,17 @@ import a450team3.tacoma.uw.edu.sylph.player.YoutubePlayerActivity;
 public class FavoriteActivity extends NavActivity
         implements FavoriteFragment.OnListFragmentInteractionListener{
 
+    /** String to be used for YouTube Code*/
     public static final String YOUTUBE_CODE = "a450team3.tacoma.uw.edu.YOUTUBECODE";
 
+    /** Google Sign In Account Info */
     protected GoogleSignInAccount mAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_favorite);
         getLayoutInflater().inflate(R.layout.activity_favorite, frameLayout);
+
         //Gets the account signed in as
         mAccount = (GoogleSignInAccount) getIntent().getExtras().get(LoginActivity.ACCOUNT_CODE);
 
@@ -62,15 +64,4 @@ public class FavoriteActivity extends NavActivity
         // Plus one and plus twelve used to get the code as substring.
         return url.substring(index + 1, index + 12); //Seemingly magic number
     }
-
-    /**
-     * Text for sharing on an Intent.
-     * Intent shareIntent = new Intent();
-     * shareIntent.setAction(Intent.ACTION_SEND);
-     * shareIntent.putExtra(Intent.EXTRA_TEXT, text);
-     * shareIntent.setType("text/plain");
-     * startActivity(Intent.createChooser(shareIntent, "Sending text to..."));
-     */
-
-
 }

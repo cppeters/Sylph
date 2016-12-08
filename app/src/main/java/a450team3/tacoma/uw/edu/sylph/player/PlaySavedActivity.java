@@ -19,6 +19,10 @@ import java.util.ArrayList;
 
 import a450team3.tacoma.uw.edu.sylph.R;
 
+/**
+ * Play Saved Activity Class, plays the saved MP3 file from ConvertActivity
+ * created by bayled
+ */
 public class PlaySavedActivity extends Activity {
     private SeekBar musicSeekBar;
     public ArrayList<String> pathList;
@@ -153,7 +157,4 @@ public class PlaySavedActivity extends Activity {
         }
 
     }
-
-
-
 }

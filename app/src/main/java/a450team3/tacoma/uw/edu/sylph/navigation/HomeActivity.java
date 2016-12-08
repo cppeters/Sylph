@@ -11,8 +11,13 @@ import a450team3.tacoma.uw.edu.sylph.authenticate.LoginActivity;
 import a450team3.tacoma.uw.edu.sylph.favorites.FavoriteActivity;
 import a450team3.tacoma.uw.edu.sylph.player.SelectionActivity;
 
+/**
+ * Home Activity Class
+ * created by cppeters
+ */
 public class HomeActivity extends NavActivity {
 
+    // Google Sign In Account info
     GoogleSignInAccount mAccount;
 
     @Override
@@ -25,11 +30,19 @@ public class HomeActivity extends NavActivity {
         mAccount = (GoogleSignInAccount) bundle.get(LoginActivity.ACCOUNT_CODE);
     }
 
+    /**
+     * Button click for YouTube Activity
+     * @param v unused
+     */
     public void youtubeClick(View v) {
         Intent intent = new Intent(this, SelectionActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Button click for Favorite Activity
+     * @param v unused
+     */
     public void favClick(View v) {
         Intent intent = new Intent(this, FavoriteActivity.class);
         if (mAccount != null) {
@@ -38,6 +51,10 @@ public class HomeActivity extends NavActivity {
         startActivity(intent);
     }
 
+    /**
+     * Button click for Search Activity
+     * @param v unused
+     */
     public void searchClick(View v) {
         Intent intent = new Intent(this, SearchActivity.class);
         startActivity(intent);
