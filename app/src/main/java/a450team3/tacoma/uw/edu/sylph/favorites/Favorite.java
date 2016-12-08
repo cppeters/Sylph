@@ -8,6 +8,8 @@ import java.util.List;
 /**
  * A favorite object will handle the data stored on a database,
  * for a list of favorites specified by the user's account.
+ * No need for verification of account format, as Google will handle all of that
+ * on their end.
  * Created by andyb on 11/9/2016.
  */
 

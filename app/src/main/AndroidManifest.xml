@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,8 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LoginActivity"
+            android:name=".authenticate.LoginActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +27,40 @@
         <activity
             android:name=".favorites.FavoriteActivity"
             android:label="@string/title_activity_favorite"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"> </activity>
+        <activity
+            android:name=".player.YoutubePlayerActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".navigation.NavActivity"
+            android:label="@string/title_activity_nav"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".navigation.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".navigation.SearchActivity"
+            android:label="@string/title_youtube"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter android:label="@string/filter_title_youtube">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
+
+                <data
+                    android:host="m.youtube.com"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".player.ConvertActivity"
+            android:launchMode="singleTask" />
+        <activity android:name=".player.PlaySavedActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".player.SelectionActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>
